@@ -1,33 +1,30 @@
-import { Sequelize } from "sequelize";
+import mongoose from "mongoose";
 import * as dotenv from "dotenv";
 
-// 1. Cargar variables de entorno dependiendo del modo
-const envFile = process.env.NODE_ENV === "test" ? ".env.test" : ".env.local";
-dotenv.config({ path: envFile });
+const envFile = process.env.NODE_ENV === "test" ? ".env.test" : ".env";
+ dotenv.config({ path: envFile });
 
-// 🛡️ Protección de seguridad
-if (
-  process.env.NODE_ENV === "test" &&
-  !/test/i.test(process.env.DB_NAME)
-) {
-  throw new Error(
-    "⚠️ Estás en modo test, pero la base de datos no contiene 'test' en el nombre. ¡Peligro de borrar datos reales!"
-  );
+
+export async function connectDB() {
+  mongoose.set("strictQuery", true);
+
+  const uri = process.env.MONGODB_URI;   // ← tu cadena Atlas SIN /nombreBD
+  const dbName = process.env.DB_NAME;    // ← nombre de BD desde .env
+
+  if (!uri)   throw new Error("❌ Falta MONGODB_URI");
+  if (!dbName) throw new Error("❌ Falta DB_NAME");
+
+  await mongoose.connect(uri, {
+    autoIndex: true,
+    dbName, // ← forzamos la BD aquí
+  });
+
+  console.log("✅ MongoDB connected to DB:", mongoose.connection.name);
 }
 
-// 2. Crear la conexión a la base de datos
-const db_connection = new Sequelize(
-  process.env.DB_NAME,     // nombre BD
-  process.env.DB_USER,     // usuario BD
-  process.env.DB_PASS,     // contraseña BD
-  {
-    host: process.env.DB_HOST,     // host BD
-    dialect: process.env.DB_DIALECT, // tipo de BD (mysql)
-    logging: false, // no mostrar logs SQL por consola
-    define: {
-      timestamps: false
-    }
+export async function disconnectDB() {
+  if (mongoose.connection.readyState !== 0) {
+    await mongoose.disconnect();
+    console.log("🔌 MongoDB disconnected");
   }
-);
-
-export default db_connection;
+}

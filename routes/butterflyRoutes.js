@@ -3,6 +3,7 @@ import { getAllButterflies, deleteButterfly, getOneButterfly, createButterfly, u
 import { validationResult } from "express-validator"
 import { createButterflyValidator, updateButterflyValidator } from "../validators/butterfliesValidators.js"
 
+
 const butterflyRouter = express.Router()
 butterflyRouter.use((req, res, next) => {
   console.log("ROUTER →", req.method, req.originalUrl);

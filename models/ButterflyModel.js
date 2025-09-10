@@ -1,114 +1,31 @@
-import { DataTypes } from "sequelize";
-import db_connection from "../database/db_connection.js";
+import mongoose from "mongoose";
 
-const ButterflyModel = db_connection.define('butterflies', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true, // 👈 le dice a MySQL que se incremente solo
-      primaryKey: true,    // 👈 clave primaria
-    },
-   
-    common_name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: "especificar common_name",
-        },
-        len: {
-          args: [2, 255], // mínimo 2, máximo 255 caracteres
-          msg: "el campo common_name no permite menos de 2 caracteres",
-        },
-      },
-    },
-    scientific_name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: "este campo no puede estar vacío",
-        },
-        len: {
-          args: [2, 255],
-          msg: "este campo no permite menos de 2 caracteres",
-        },
-      },
-    },
-    location: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: "este campo no puede estar vacío",
-        },
-        len: {
-          args: [2, 255],
-          msg: "este campo no permite menos de 2 caracteres",
-        },
-      },
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: "este campo no puede estar vacío",
-        },
-        len: {
-          args: [10, 10000], // mínimo 10 caracteres
-          msg: "este campo no permite menos de 10 caracteres",
-        },
-      },
-    },
-    habitat: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: "este campo no puede estar vacío",
-        },
-        len: {
-          args: [2, 255],
-          msg: "este campo no permite menos de 2 caracteres",
-        },
-      },
-    },
-    image: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: "este campo no puede estar vacío",
-        },
-        len: {
-          args: [5, 10000], // mínimo 5 caracteres (ej: URL)
-          msg: "este campo no permite menos de 5 caracteres",
-        },
-        // Si quieres forzar que sea una URL, descomenta esto:
-         isUrl: { msg: "el campo image debe ser una URL válida" }
-      },
-    },
-    migratory: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false, // mejor poner default
-      validate: {
-        notNull: {
-          msg: "este campo no puede estar vacío",
-        },
-      },
-    },
+const butterflySchema = new mongoose.Schema(
+  {
+    common_name:      { type: String, required: true, trim: true },
+    scientific_name:  { type: String, required: true, trim: true },
+    location:         { type: String, required: true, trim: true },
+    description:      { type: String, required: true, minlength: 10, trim: true },
+    habitat:          { type: String, required: true, trim: true },
+    image:            { type: String, required: true, trim: true },
+    // Si en tu front siempre envías migratory, puedes dejar required: true.
+    // Si a veces no lo mandas, mejor un default:
+    migratory:        { type: Boolean, required: true }, // o: { type: Boolean, default: false }
   },
   {
-    timestamps: false,
-    tableName: "butterflies", // fija el nombre real de la tabla
-    freezeTableName: true, // evita pluralizaciones automáticas
+    timestamps: true,
+    versionKey: false, // 👈 elimina __v sin tocar transform
+    toJSON: {
+      virtuals: true,
+      transform: (_doc, ret) => {
+        ret.id = ret._id.toString(); // 👈 id como string para el front
+        delete ret._id;
+      },
+    },
   }
 );
-export default ButterflyModel
 
+// Índice (opcional, corrigiendo tu línea)
+butterflySchema.index({ scientific_name: 1 }, { unique: false });
 
-
-
-
-
+export default mongoose.model("Butterfly", butterflySchema);
