@@ -32,7 +32,7 @@ if (process.env.NODE_ENV !== "test") {
       console.error("DB error:", error);
     }
 
-    const PORT = process.env.PORT || 8000;
+    const PORT = process.env.PORT || 8080;
     server = app.listen(PORT, () => {
       console.log(`🚀 Server up at http://localhost:${PORT}/`);
     });
