@@ -30,14 +30,14 @@ app.get("/health", (_req, res) => res.json({ ok: true }));
 app.get("/", (_req, res) => res.send("Hola API"));
 app.use("/butterflies", butterflyRouter);
 app.get("/health/db", (_req, res) => {
-  const state = ["disconnected","connected","connecting","disconnecting","uninitialized"][mongoose.connection.readyState] || "unknown";
+  const state = ["disconnected", "connected", "connecting", "disconnecting", "uninitialized"][mongoose.connection.readyState] || "unknown";
   res.json({ dbState: state });
 });
 
 // Aliases estándar para orquestadores
 app.get("/healthz", (_req, res) => res.json({ ok: true }));
 app.get("/readyz", (_req, res) => {
-  const state = ["disconnected","connected","connecting","disconnecting","uninitialized"][mongoose.connection.readyState] || "unknown";
+  const state = ["disconnected", "connected", "connecting", "disconnecting", "uninitialized"][mongoose.connection.readyState] || "unknown";
   res.status(state === "connected" ? 200 : 503).json({ dbState: state });
 });
 // 404
@@ -65,7 +65,7 @@ if (process.env.NODE_ENV !== "test") {
     }
 
     const PORT = process.env.PORT || 8080;
-    server = app.listen(PORT, "0.0.0.0",  () => {
+    server = app.listen(PORT, "0.0.0.0", () => {
       console.log(`🚀 Server up at http://localhost:${PORT}/`);
     });
 
@@ -74,6 +74,11 @@ if (process.env.NODE_ENV !== "test") {
       process.exit(0);
     });
   })();
+  process.on("SIGTERM", async () => {
+    await disconnectDB();
+    process.exit(0);
+  });
+
 }
 
 export { server };

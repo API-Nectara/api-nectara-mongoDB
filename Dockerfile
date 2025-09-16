@@ -21,4 +21,4 @@ EXPOSE 8080
 # CMD curl -fsS http://localhost:8080/health || exit 1
 
 # 5) Arranque
-CMD ["node","app.js", "0.0.0.0.", "--port", "8080"]
+CMD ["node","app.js"]
