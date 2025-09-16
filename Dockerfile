@@ -17,8 +17,8 @@ ENV NODE_ENV=production
 EXPOSE 8080
 
 # 4) Healthcheck (usa tu endpoint /health)
-HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-  CMD curl -fsS http://localhost:8080/health || exit 1
+# HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+# CMD curl -fsS http://localhost:8080/health || exit 1
 
 # 5) Arranque
 CMD ["node","app.js"]
