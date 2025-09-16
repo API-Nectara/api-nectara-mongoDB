@@ -10,7 +10,7 @@ RUN npm ci --only=production
 COPY . .
 
 # (Opcional) utilidades para healthcheck
-RUN apk add --no-cache curl
+# RUN apk add --no-cache curl
 
 # 3) Variables y puertos
 ENV NODE_ENV=production
@@ -21,4 +21,4 @@ EXPOSE 8080
 # CMD curl -fsS http://localhost:8080/health || exit 1
 
 # 5) Arranque
-CMD ["node","app.js"]
+CMD ["node","app.js", "0.0.0.0.", "--port", "8080"]
