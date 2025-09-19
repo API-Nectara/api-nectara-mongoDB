@@ -1,7 +1,19 @@
 # 🦋 Butterfly API
-Una API REST para gestionar información sobre mariposas africanas. Originalmente desarrollada con MySQL y posteriormente migrada a **MongoDB Atlas**.
 
----
+
+<div align="center">
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js">
+  <img src="https://img.shields.io/badge/Express.js-404D59?style=for-the-badge" alt="Express.js">
+  <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
+  <img src="https://img.shields.io/badge/Jest-323330?style=for-the-badge&logo=Jest&logoColor=white" alt="Jest">
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+  <img src="https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white" alt="Render">
+</div>
+
+<div align="center">
+  <h3>🌍 API REST para gestionar información sobre mariposas africanas</h3>
+  <p><em>Originalmente desarrollada con MySQL y posteriormente migrada a <strong>MongoDB Atlas</strong></em></p>
+</div>
 
 ## ✨ Características
 
@@ -53,6 +65,52 @@ PORT=8080
 ```bash
 node app.js
 ```
+### 🐳 Despliegue con Docker
+
+El proyecto incluye un Dockerfile para facilitar el despliegue:
+```bash
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+EXPOSE 8080
+CMD ["node", "app.js"]
+```
+### Ejecutar con Docker localmente:
+```bash
+bash# Construir la imagen
+docker build -t butterfly-api .
+```
+```bash
+bash#  Ejecutar el contenedor
+docker run -p 8080:8080 --env-file .env butterfly-api
+```
+ ## 🌐 Producción
+🚀 API en vivo: https://api-nectara-mongodb.onrender.com
+La API está desplegada en Render utilizando Docker para un entorno de producción estable y escalable.
+
+### 🔧 Arquitectura de Despliegue:
+```mermaid
+graph LR
+    A[GitHub Repository] --> B[Render]
+    B --> C[Docker Container]
+    C --> D[MongoDB Atlas]
+    B --> E[Production URL]
+    F[Vercel Frontend] --> E
+```
+| Servicio | Función | URL |
+|----------|---------|-----|
+| **Render** | Hosting de la API dockerizada | `https://api-nectara-mongodb.onrender.com` |
+| **MongoDB Atlas** | Base de datos en la nube | `cluster0.mongodb.net` |
+| **Vercel** | Frontend conectado a la API | `https://front-nectara-t9br.vercel.app/` |
+
+#### ⚡ **Características del despliegue:**
+- 🐳 **Dockerización automática** por Render
+- 🔄 **CI/CD automático** desde GitHub
+- 🌍 **Escalabilidad automática** según demanda  
+- 🔒 **Variables de entorno seguras**
+- 📊 **Monitorización en tiempo real**
 
 ---
 
@@ -274,7 +332,7 @@ npm run test:watch
 | Nombre | Rol |
 |--------|-----|
 | **Paloma Gómez** | Backend Developer |
-| **Gema Yébenez** | Backend Developer |
+| **Gema Yébenes** | Backend Developer |
 | **Maryori Cruz** | Backend Developer |
 | **Ana Muruzabal** | Backend Developer |
 | **Camila Arenas** | Backend Developer |
@@ -287,3 +345,16 @@ npm run test:watch
   <p>✨ <strong>¡Gracias por usar Butterfly API!</strong> ✨</p>
   <p>🦋 <em>Conservando la biodiversidad, una mariposa a la vez</em> 🦋</p>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
