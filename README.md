@@ -332,7 +332,7 @@ npm run test:watch
 | Nombre | Rol |
 |--------|-----|
 | **Paloma Gómez** | Backend Developer |
-| **Gema Yébenez** | Backend Developer |
+| **Gema Yébenes** | Backend Developer |
 | **Maryori Cruz** | Backend Developer |
 | **Ana Muruzabal** | Backend Developer |
 | **Camila Arenas** | Backend Developer |
